@@ -1,0 +1,53 @@
+
+/******** Preppsre Enviroment *****/
+create new user useradd ambari
+grnat sudo privileges usermod -aG wheel ambari
+Host Name sudo hostnamectl set-hostname ambari.paltel.net
+sudo nano /etc/hosts ambari.paltel.net ambari
+sudo /etc/sysconfig/network HOSTNAME=ambari.paltel.net
+sudo iptables-save > ~/firewall.rules
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+/etc/sudoers amabri ALL=(ALL) ALL
+systemctl reload sshd.service
+
+sudo yum install ntp
+sudo systemctl start ntpd
+sudo systemctl enable ntpd
+sudo hwclock --systohc
+
+tar xzf jdk-8u241-linux-x64.tar.gz
+cd jdk1.8.0_241
+alternatives --install /usr/bin/java java /jdk1.8.0_201/bin/java 2
+alternatives --config java
+export JAVA_HOME=/opt/jdk1.8.0_201
+export JRE_HOME=/opt/jdk1.8.0_201/jre
+export PATH=$PATH:/opt/jdk1.8.0_201/bin:/jdk1.8.0_201/jre/bin
+sudo yum install git
+sudo yum -y install gcc
+sudo yum install python-devel.x86_64
+yum install rpm
+yum install rpm-build -y
+
+/********************** Ambari Installation **********************************/
+using ambari user 
+
+wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.7.4.0/ambari.repo -O /etc/yum.repos.d/ambari.repo
+
+yum repolist
+yum makecache
+yum install ambari-server
+yum install ambari-agent 
+ambari-server setup 
+
+/**********************8
+Database admin user (postgres):
+Database name (ambari):
+Postgres schema (ambari):
+Username (ambari):
+Enter Database Password (bigdata):
+/*************************************
+
+
+ambari-server start
+ambari-agent start
